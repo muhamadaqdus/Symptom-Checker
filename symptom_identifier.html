@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symptom-Based Disease Identifier</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Symptom-Based Disease Identifier</h1>
+    <p>Select the symptoms you are experiencing from the list below:</p>
+    <form id="symptom-form">
+        <div>
+            <input type="checkbox" id="symptom1" value="loose stools">
+            <label for="symptom1">Loose stools</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom2" value="abdominal pain">
+            <label for="symptom2">Abdominal pain</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom3" value="dehydration">
+            <label for="symptom3">Dehydration</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom4" value="high temperature">
+            <label for="symptom4">High temperature</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom5" value="chills">
+            <label for="symptom5">Chills</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom6" value="sweating">
+            <label for="symptom6">Sweating</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom7" value="fever">
+            <label for="symptom7">Fever</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom8" value="joint pain">
+            <label for="symptom8">Joint pain</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom9" value="rash">
+            <label for="symptom9">Rash</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom10" value="headache">
+            <label for="symptom10">Headache</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom11" value="prolonged fever">
+            <label for="symptom11">Prolonged fever</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom12" value="weakness">
+            <label for="symptom12">Weakness</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom13" value="stomach pain">
+            <label for="symptom13">Stomach pain</label>
+        </div>
+        <div>
+            <input type="checkbox" id="symptom14" value="constipation">
+            <label for="symptom14">Constipation</label>
+        </div>
+        <button type="button" onclick="identifyDisease()">Submit</button>
+    </form>
+    <div id="result" class="result" style="display: none;"></div>
+
+    <script>
+        function identifyDisease() {
+            const diseases = {
+                "Diarrhea": ["loose stools", "abdominal pain", "dehydration"],
+                "Fever": ["high temperature", "chills", "sweating"],
+                "Dengue": ["fever", "joint pain", "rash", "headache"],
+                "Typhoid": ["prolonged fever", "weakness", "stomach pain", "constipation"]
+            };
+
+            const selectedSymptoms = Array.from(document.querySelectorAll('input[type="checkbox"]:checked')).map(input => input.value);
+
+            let matchPercentages = {};
+            for (const [disease, symptoms] of Object.entries(diseases)) {
+                const matches = symptoms.filter(symptom => selectedSymptoms.includes(symptom));
+                const percentage = (matches.length / symptoms.length) * 100;
+                if (percentage > 0) {
+                    matchPercentages[disease] = percentage;
+                }
+            }
+
+            const resultDiv = document.getElementById("result");
+            if (Object.keys(matchPercentages).length === 0) {
+                resultDiv.innerHTML = "Your symptoms do not match our database. Please consult a doctor. May Allah bless you with health.";
+            } else {
+                let resultMessage = "Based on your symptoms, you may have:<br>";
+                for (const [disease, percentage] of Object.entries(matchPercentages)) {
+                    resultMessage += `- ${disease}: ${percentage.toFixed(2)}% chance<br>`;
+                }
+                resultMessage += "<br>Please consult our free doctor online or book your nearest doctor for a proper diagnosis. May Allah bless you with health.";
+                resultDiv.innerHTML = resultMessage;
+            }
+            resultDiv.style.display = "block";
+        }
+    </script>
+</body>
+</html>
